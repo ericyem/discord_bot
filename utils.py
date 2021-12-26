@@ -1,4 +1,4 @@
-import os, discord
+import os
 from dotenv import load_dotenv
 
 def get_local_env(envString :str):

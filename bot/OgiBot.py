@@ -1,9 +1,9 @@
-import discord, discord.ext, discord.utils, asyncio
+import discord, discord.ext, discord.utils
 from discord.ext import commands
-from casesinfo import CovidCases
-from database import data
-from roles import initRoles, assign_role, remove_role
-from readycheck import initReadyData, runReadyCheck
+from data.database import data
+from actions.casesinfo import CovidCases
+from actions.roles import initRoles, assign_role, remove_role
+from actions.readycheck import initReadyData, runReadyCheck
 import random
 class Ogikubot(commands.Bot):
     

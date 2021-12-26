@@ -1,6 +1,6 @@
 import discord
 from utils import get_local_env
-from OgiBot import Ogikubot   
+from bot.OgiBot import Ogikubot   
 
 # don't change this code.
 intents = discord.Intents.default()

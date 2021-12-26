@@ -1,8 +1,6 @@
-
-   
 from discord.client import Client
 from discord import Member, Embed
-from stopwatch import Timer
+from .timer import Timer
 import asyncio
 class ReadyChecker:
     def __init__(self, author, game) -> None:
