@@ -1,15 +1,16 @@
 # base image
-FROM python:3.8-slim-buster 
+FROM python:3.8-slim-buster
+ARG TOKEN_ARG
+ENV TOKEN=$TOKEN_ARG
 # working directory
 WORKDIR /app
 # copy the requirements txt file
 COPY requirements.txt requirements.txt
 # install dependencies
-RUN pip3 install -r requirments.txt
+RUN pip3 install -r requirements.txt
 # copy rest of the files
 COPY . .
 
-RUN apt-get update && apt-get install -y ffmpeg
+EXPOSE 8080
 
-# running the executable
-CMD ["python3", "main.py"]
+ENTRYPOINT [ "python3", "main.py" ]
