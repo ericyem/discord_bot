@@ -16,8 +16,6 @@ jobs:
         with:
           python-version: "3.8"
           architecture: "x64"
-      - name: Build with Maven
-        run: mvn -B package -DTOKEN=${{ secrets.TOKEN }} --file pom.xml
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
