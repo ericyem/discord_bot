@@ -29,7 +29,7 @@
         "memoryReservation": 500,
         "volumesFrom": [],
         "stopTimeout": null,
-        "image": "206890211931.dkr.ecr.eu-west-1.amazonaws.com/discordbot:latest",
+        "image": "382314890178.dkr.ecr.us-west-2.amazonaws.com/discordbot:latest",
         "startTimeout": null,
         "firelensConfiguration": null,
         "dependsOn": null,
@@ -55,7 +55,7 @@
     "compatibilities": [
       "EC2"
     ],
-    "taskDefinitionArn": "arn:aws:ecs:eu-west-1:206890211931:task-definition/discordbot:2",
+    "taskDefinitionArn": "arn:aws:ecs:us-west-2:382314890178:cluster/discord-bot",
     "family": "discordbot",
     "requiresAttributes": [
       {
