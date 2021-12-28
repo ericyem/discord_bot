@@ -29,7 +29,7 @@
         "memoryReservation": 500,
         "volumesFrom": [],
         "stopTimeout": null,
-        "image": "382314890178.dkr.ecr.us-west-2.amazonaws.com/discordbot:latest",
+        "image": "382314890178.dkr.ecr.us-west-2.amazonaws.com/discordbot",
         "startTimeout": null,
         "firelensConfiguration": null,
         "dependsOn": null,
