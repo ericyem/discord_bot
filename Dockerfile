@@ -9,6 +9,10 @@ COPY requirements.txt requirements.txt
 # install dependencies
 RUN pip3 install -r requirements.txt
 # copy rest of the files
+
+RUN mkdir -p /usr/src/bot
+WORKDIR /usr/src/bot
+
 COPY . .
 
 EXPOSE 8080
