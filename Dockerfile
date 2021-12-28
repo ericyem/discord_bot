@@ -17,4 +17,5 @@ COPY . .
 
 EXPOSE 8080
 
-ENTRYPOINT [ "python3", "main.py" ]
+ENTRYPOINT [ "python3", "main.py"]
+CMD [TOKEN]
