@@ -1,6 +1,5 @@
 # base image
-FROM goralis/discord.py:3.9-alpine
-
+FROM python:3.8-slim-buster
 ARG TOKEN_ARG
 ENV TOKEN=$TOKEN_ARG
 # working directory
@@ -14,4 +13,4 @@ COPY . .
 
 EXPOSE 8080
 
-CMD [ "python3", "main.py"]
+ENTRYPOINT [ "python3", "main.py"]
