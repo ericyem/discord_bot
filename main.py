@@ -1,5 +1,4 @@
 import discord
-from utils import get_local_env
 from bot.OgiBot import Ogikubot
 import os
 
