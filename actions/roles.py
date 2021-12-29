@@ -16,7 +16,7 @@ def createRolesMessage():
 
 async def initRoles(client: Client):
         # id of the roles channel
-        channel = client.get_channel(910706290760773662)
+        channel = client.get_channel(910706290760773662) # hard coded
         messages = channel.history().filter(lambda x: x.author == client.user)
         botMessages = await messages.flatten()
         if len(botMessages) == 0:
@@ -28,7 +28,7 @@ async def initRoles(client: Client):
 async def retainedRoles(client: Client, message: Message):
         reactionList = message.reactions
         # id of guild
-        guild = await client.fetch_guild(910045653760102431)
+        guild = await client.fetch_guild(910045653760102431) # hard coded
         for reaction in reactionList:
             async for user in reaction.users():
                 if message.author != user:

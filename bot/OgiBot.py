@@ -82,4 +82,10 @@ class Ogikubot(commands.Bot):
             rngCoin = random.randrange(0,2)
             res = "Heads" if rngCoin else "Tails"
             await ctx.send("{name} flipped a: {result}".format(name=author, result=res))
+        
+        @self.command(pass_context = True)
+        async def summons(ctx, primos, intertwined):
+            totalPrimos = int(primos) + int(intertwined)*160
+            totalSummons = float(primos/160) + float(intertwined)
+            await ctx.send("Total Primos: " + str(totalPrimos) + "\nTotal Summons: " + str(totalSummons)) 
             
