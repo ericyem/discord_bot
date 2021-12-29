@@ -4,6 +4,7 @@ from data.database import data
 from actions.casesinfo import CovidCases
 from actions.roles import initRoles, assign_role, remove_role
 from actions.readycheck import initReadyData, runReadyCheck
+import datetime as dt
 import random
 class Ogikubot(commands.Bot):
     
@@ -14,6 +15,7 @@ class Ogikubot(commands.Bot):
         self.rolesIds = data['roles']['roleEmojis']
         self.gameIds = data['gameIds']
         self.readyData = None
+        self.cachedDeletedMessage = None
         self.add_commands()
         
     async def on_ready(self):
@@ -41,11 +43,15 @@ class Ogikubot(commands.Bot):
             self.readyData.remove_data(reaction.emoji, user)
             newEmbed = self.readyData.updateEmbed()
             await reaction.message.edit(embed=newEmbed)
+    
         
     async def on_raw_reaction_remove(self, payload):
         if payload.user_id != self.user.id:
             if payload.channel_id == 910706290760773662:
                 await remove_role(self, payload)
+
+    async def on_raw_message_delete(self, payload):
+        self.cachedDeletedMessage = payload.cached_message
 
     def add_commands(self):
         @self.command(pass_context = True)
@@ -88,4 +94,22 @@ class Ogikubot(commands.Bot):
             totalPrimos = int(primos) + int(intertwined)*160
             totalSummons = float(primos/160) + float(intertwined)
             await ctx.send("Total Primos: " + str(totalPrimos) + "\nTotal Summons: " + str(totalSummons)) 
-            
+        
+        # spams a designated user
+        @self.command(pass_context=True)
+        async def spam(ctx, *, extra):
+            await ctx.message.delete()
+            authorName = ctx.author.name
+            MelbourneTime = (dt.now() + dt.timedelta(hours=11)).strftime('%H:%M:%S')
+            for i in range(0,11):
+                botMessage = await ctx.send(authorName + ": where are you "  + extra + " (" + str(i) + "/10)" )
+                await botMessage.delete()
+            await ctx.send(authorName + " has requested your presence" + extra + "at: " + str(MelbourneTime))
+        
+        @self.command(pass_context=True)
+        async def snipe(ctx):
+            if self.cachedDeletedMessage == None:
+                await ctx.send("Nothing to snipe") 
+            else:
+                await ctx.send(self.cachedDeletedMessage.author.name)
+                await ctx.send(self.cachedDeletedMessage.content) 
