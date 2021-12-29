@@ -111,5 +111,5 @@ class Ogikubot(commands.Bot):
             if self.cachedDeletedMessage == None:
                 await ctx.send("Nothing to snipe") 
             else:
-                await ctx.send(self.cachedDeletedMessage.author.name)
-                await ctx.send(self.cachedDeletedMessage.content) 
+                await ctx.send(self.cachedDeletedMessage.author.name + "sent:" + self.cachedDeletedMessage.content)
+                await ctx.send(self.cachedDeletedMessage.attachments.url) 
