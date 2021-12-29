@@ -96,11 +96,10 @@ class Ogikubot(commands.Bot):
             botMessage = await ctx.send("Currently spamming them in their DMs.")
             try:
                 await user.send(authorName + " is spamming you")
-                for i in range(1,6):
+                for _ in range(1,6):
                     await user.send("spam")
-                    await botMessage.edit("Currently spamming them in their DMs (" + str(i) + "/5)")  
             except:
-                await ctx.send("Incorrect Syntax:\nUsage: `!dmspam [@user]`")
+                await ctx.send("Incorrect Syntax:\nUsage: `$dmspam [@user]`")
             await botMessage.edit("Finished spamming them.")
         
         @self.command(pass_context=True)
@@ -117,6 +116,7 @@ class Ogikubot(commands.Bot):
                 await ctx.send(str(extra))
             else:
                 await ctx.send("Hey ya fkin gronk, don't even try again ya dog.")
+                
         @self.command(pass_context = True)   
         async def pp(ctx):
             ppSize = random.randrange(0,16) * "="
