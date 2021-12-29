@@ -1,11 +1,10 @@
-import discord, discord.ext, discord.utils
+import discord, discord.ext, discord.utils, random
 from discord.ext import commands
 from data.database import data
 from actions.casesinfo import CovidCases
 from actions.roles import initRoles, assign_role, remove_role
 from actions.readycheck import initReadyData, runReadyCheck
 import datetime as dt
-import random
 class Ogikubot(commands.Bot):
     
     def __init__(self, *args, **kwargs) -> None:
@@ -58,10 +57,6 @@ class Ogikubot(commands.Bot):
         async def hello(ctx):
             await ctx.send("```Hello {}```".format(ctx.message.author))
 
-        @self.command(pass_context = True)
-        async def bad(ctx):
-            await ctx.send("```No you```")
-
         @self.command(pass_context=True)
         async def covid(ctx):
             botMessage = await ctx.send("Gathering results...")
@@ -94,22 +89,36 @@ class Ogikubot(commands.Bot):
             totalPrimos = int(primos) + int(intertwined)*160
             totalSummons = float(primos/160) + float(intertwined)
             await ctx.send("Total Primos: " + str(totalPrimos) + "\nTotal Summons: " + str(totalSummons)) 
-        
-        # spams a designated user
-        @self.command(pass_context=True)
-        async def spam(ctx, *, extra):
-            await ctx.message.delete()
+            
+        @self.command(pass_context = True)
+        async def dmspam(ctx, user: discord.Member=None):
             authorName = ctx.author.name
-            MelbourneTime = (dt.now() + dt.timedelta(hours=11)).strftime('%H:%M:%S')
-            for i in range(0,11):
-                botMessage = await ctx.send(authorName + ": where are you "  + extra + " (" + str(i) + "/10)" )
-                await botMessage.delete()
-            await ctx.send(authorName + " has requested your presence" + extra + "at: " + str(MelbourneTime))
+            botMessage = await ctx.send("Currently spamming them in their DMs.")
+            try:
+                await user.send(authorName + " is spamming you")
+                for i in range(1,6):
+                    await user.send("spam")
+                    await botMessage.edit("Currently spamming them in their DMs (" + str(i) + "/5)")  
+            except:
+                await ctx.send("Incorrect Syntax:\nUsage: `!dmspam [@user]`")
+            await botMessage.edit("Finished spamming them.")
         
         @self.command(pass_context=True)
         async def snipe(ctx):
             if self.cachedDeletedMessage == None:
                 await ctx.send("Nothing to snipe") 
             else:
-                await ctx.send(self.cachedDeletedMessage.author.name + "sent: " + self.cachedDeletedMessage.content)
-                await ctx.send(self.cachedDeletedMessage.attachments[0].url) 
+                await ctx.send(self.cachedDeletedMessage.author.name + " sent: " + self.cachedDeletedMessage.content)
+                await ctx.send(self.cachedDeletedMessage.attachments[0].url)
+        @self.command(pass_context = True)
+        async def talk(ctx, key, *, extra):
+            await ctx.message.delete()
+            if str(key) == "123":
+                await ctx.send(str(extra))
+            else:
+                await ctx.send("Hey ya fkin gronk, don't even try again ya dog.")
+        @self.command(pass_context = True)   
+        async def pp(ctx):
+            ppSize = random.randrange(0,16) * "="
+            authorName = ctx.author.name
+            await ctx.send("{}".format(authorName) + " pp: 8" + ppSize + "D")
