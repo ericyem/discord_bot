@@ -41,8 +41,7 @@ class Ogikubot(commands.Bot):
             self.readyData.remove_data(reaction.emoji, user)
             newEmbed = self.readyData.updateEmbed()
             await reaction.message.edit(embed=newEmbed)
-            
-            
+        
     async def on_raw_reaction_remove(self, payload):
         if payload.user_id != self.user.id:
             if payload.channel_id == 910706290760773662:
@@ -56,10 +55,6 @@ class Ogikubot(commands.Bot):
         @self.command(pass_context = True)
         async def bad(ctx):
             await ctx.send("```No you```")
-
-        @self.command(pass_context = True)
-        async def gay(ctx):
-            await ctx.send("```{} is gay```".format(ctx.message.author))
 
         @self.command(pass_context=True)
         async def covid(ctx):
@@ -87,4 +82,4 @@ class Ogikubot(commands.Bot):
             rngCoin = random.randrange(0,2)
             res = "Heads" if rngCoin else "Tails"
             await ctx.send("{name} flipped a: {result}".format(name=author, result=res))
-        
+            
