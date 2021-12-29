@@ -2,6 +2,7 @@ on:
   push
 name: Deploy to Amazon ECS
 
+
 jobs:
   deploy:
     name: Deploy
@@ -38,7 +39,6 @@ jobs:
           --build-arg TOKEN_ARG=${{ secrets.DISCORD_TOKEN }} .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
