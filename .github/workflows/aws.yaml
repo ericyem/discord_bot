@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - master
+      - origin/main
 name: Deploy to Amazon ECS
 
 
