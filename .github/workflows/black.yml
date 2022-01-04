@@ -1,15 +1,11 @@
-name: black
-on: push
+name: black-action
+on: [push, pull_request]
 jobs:
-  black:
-    runs-on: ubuntu-20.04
+  linter_name:
+    name: runner / black formatter
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
+      - uses: rickstaa/action-black@v1
         with:
-          python-version: 3.9
-      - run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - run: |
-          black --check --verbose .
+          black_args: ". --check"
