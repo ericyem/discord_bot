@@ -5,6 +5,6 @@ import os
 # don't change this code.
 intents = discord.Intents.default()
 intents.members = True
-botClient = Ogikubot(command_prefix='$', intents=intents)
+botClient = Ogikubot(command_prefix="$", intents=intents)
 # runs the bot
 botClient.run(os.getenv("TOKEN"))
