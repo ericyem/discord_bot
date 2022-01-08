@@ -33,8 +33,8 @@ class Ogikubot(commands.Bot):
             return
         if reaction.message.id == self.readyData.get_msg_id():
             self.readyData.add_data(reaction.emoji, user)
-            newEmbed = self.readyData.updateEmbed()
-            await reaction.message.edit(embed=newEmbed)
+            newMsg = self.readyData.updateMessage()
+            await reaction.message.edit(newMsg)
 
     async def on_reaction_remove(
         self, reaction: discord.Reaction, user: discord.Member
@@ -43,8 +43,8 @@ class Ogikubot(commands.Bot):
             return
         if reaction.message.id == self.readyData.get_msg_id():
             self.readyData.remove_data(reaction.emoji, user)
-            newEmbed = self.readyData.updateEmbed()
-            await reaction.message.edit(embed=newEmbed)
+            newMsg = self.readyData.updateMessage()
+            await reaction.message.edit(newMsg)
 
     async def on_raw_reaction_remove(self, payload):
         if payload.user_id != self.user.id:
@@ -76,8 +76,9 @@ class Ogikubot(commands.Bot):
         )
         async def ready(ctx):
             self.readyData = initReadyData()
+            author = ctx.author
             await ctx.message.delete()
-            await runReadyCheck(ctx, self)
+            await runReadyCheck(ctx, author, self)
 
         @self.command(pass_context=True)
         async def roll(ctx):

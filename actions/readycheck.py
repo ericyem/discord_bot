@@ -13,14 +13,15 @@ class ReadyChecker:
         self.msg_id = data["messageId"]
 
     def createReadyMsg(self):
-        self.output = "{name} has started a ready check for: {game} | additional notes: ".format(name=self.author, game=self.game)
-        self.output += "Players ready: " + formatListString(self.reactEmojis["✅"])
-        self.output += "Players ready: " + formatListString(self.reactEmojis["🕐"])
-        self.output += "Players ready: " + formatListString(self.reactEmojis["❌"])
-        self.output += "Players coming: {yes} \n Players not coming: {no}".format(
+        self.output = ["{name} has started a ready check for: {game} | additional notes: ".format(name=self.author, game=self.game)]
+        self.output.append("Players ready: " + formatListString(self.reactEmojis["✅"]))
+        self.output.append("Players ready: " + formatListString(self.reactEmojis["🕐"]))
+        self.output.append("Players ready: " + formatListString(self.reactEmojis["❌"]))
+        self.output.append("Players coming: {yes} \n Players not coming: {no}".format(
                 yes=len(self.reactEmojis["✅"]), no=len(self.reactEmojis["❌"])
-            )
-        return self.output
+            ))
+        
+        return "\n".join(self.output)
 
     def add_data(self, emoji, player: Member):
         try:
@@ -34,30 +35,14 @@ class ReadyChecker:
         except KeyError:
             print("error removing data")
 
-    def updateEmbed(self):
-        self.embed.set_field_at(
-            index=1,
-            name="Players Ready",
-            value=formatListString(self.reactEmojis["✅"]),
-            inline=True,
-        )
-        self.embed.set_field_at(
-            index=2,
-            name="Players Coming Next Game",
-            value=formatListString(self.reactEmojis["🕐"]),
-            inline=True,
-        )
-        self.embed.set_field_at(
-            index=3,
-            name="Players Not Coming",
-            value=formatListString(self.reactEmojis["❌"]),
-            inline=True,
-        )
-        return self.embed
+    def updateMessage(self):
+        self.output[1] = "Players ready: " + formatListString(self.reactEmojis["✅"])
+        self.output[2] = "Players ready: " + formatListString(self.reactEmojis["🕐"])
+        self.output[3] = "Players ready: " + formatListString(self.reactEmojis["❌"])
+        return "\n".join(self.output)
 
     def get_msg_id(self):
         return self.msg_id
-
 
 def initReadyData():
     return {"messageId": None, "reactEmojis": {"✅": [], "🕐": [], "❌": []}}
@@ -78,13 +63,12 @@ async def ready_actions_add(readyChecker: ReadyChecker, botMessage):
         await botMessage.add_reaction(emoji)
 
 
-async def runReadyCheck(ctx, client):
+async def runReadyCheck(ctx, author, client):
     try:
         botMessage = await ctx.channel.send("```I am ready. Tag a game and optionally write a note. For example: @Valorant quick we are starting in 2 minutes.```")
-        message = await client.wait_for('message', check=lambda m: m.author == ctx.author, timeout=60)
+        message = await client.wait_for('message', check=lambda m: m.author == author, timeout=60)
         botMessage.delete()
-        author = ctx.author.display_name
-        ctx.send(author)
+        ctx.send(author.display_name)
         gameStr = client.gameIds[message]
         ctx.send(gameStr)
         client.readyData = ReadyChecker(author, gameStr)
