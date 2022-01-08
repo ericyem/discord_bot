@@ -78,7 +78,7 @@ async def runReadyCheck(ctx, author, client):
     except:
         await ctx.send("Didn't work")
     else:
-        readyMessage = await ctx.send(embed=client.readyData.createReadyMsg())
+        readyMessage = await ctx.send(client.readyData.createReadyMsg())
         client.readyData.msg_id = readyMessage.id
         await ready_actions_add(client.readyData, readyMessage)
         timer = Timer(120)
