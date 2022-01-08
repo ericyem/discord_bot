@@ -7,4 +7,4 @@ intents = discord.Intents.default()
 intents.members = True
 botClient = Ogikubot(command_prefix="$", intents=intents)
 # runs the bot
-botClient.run(os.getenv("TOKEN"))
+# botClient.run(os.getenv("TOKEN"))
