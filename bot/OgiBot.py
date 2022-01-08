@@ -75,6 +75,7 @@ class Ogikubot(commands.Bot):
             help="Type $ready, then enter @<game> with an optional note",
         )
         async def ready(ctx, game):
+            
             self.readyData = initReadyData()
             await ctx.message.delete()
             await ctx.send(game)

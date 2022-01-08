@@ -13,6 +13,7 @@ class ReadyChecker:
         self.msg_id = data["messageId"]
 
     def createReadyMsg(self):
+        
         self.embed = Embed()
         self.embed.add_field(
             name=(self.game + " check"),
@@ -103,10 +104,13 @@ async def ready_actions_add(readyChecker: ReadyChecker, botMessage):
         await botMessage.add_reaction(emoji)
 
 
-async def runReadyCheck(ctx, game, client):
+async def runReadyCheck(ctx, client):
     try:
+        botMessage = await ctx.channel.send("```I am ready. Tag a game and optionally write a note. For example: @Valorant quick we are starting in 2 minutes.```")
+        message = await client.wait_for('message', check=lambda m: m.author == ctx.author, timeout=60)
+        botMessage.delete()
         author = ctx.author.display_name
-        gameStr = client.gameIds[game]
+        gameStr = client.gameIds[message]
         client.readyData = ReadyChecker(author, gameStr)
     except asyncio.TimeoutError:
         await ctx.send("```bruh you took too long to type something.```")
