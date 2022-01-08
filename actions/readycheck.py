@@ -13,45 +13,14 @@ class ReadyChecker:
         self.msg_id = data["messageId"]
 
     def createReadyMsg(self):
-        
         self.output = "{name} has started a ready check for: {game} | additional notes: ".format(name=self.author, game=self.game)
         self.output += "Players ready: " + formatListString(self.reactEmojis["✅"])
-        
-        
-        
-        self.embed = Embed()
-        self.embed.add_field(
-            name=(self.game + " check"),
-            value=(
-                "{name} has started a ready check for {game}".format(
-                    name=self.author, game=self.game
-                )
-            ),
-            inline=False,
-        )
-        self.embed.add_field(
-            name="Players Ready",
-            value=formatListString(self.reactEmojis["✅"]),
-            inline=True,
-        )
-        self.embed.add_field(
-            name="Players Coming Next Game",
-            value=formatListString(self.reactEmojis["🕐"]),
-            inline=True,
-        )
-        self.embed.add_field(
-            name="Players Not Coming",
-            value=formatListString(self.reactEmojis["❌"]),
-            inline=True,
-        )
-        self.embed.add_field(
-            name="Total",
-            value="Players coming: {yes} \n Players not coming: {no}".format(
+        self.output += "Players ready: " + formatListString(self.reactEmojis["🕐"])
+        self.output += "Players ready: " + formatListString(self.reactEmojis["❌"])
+        self.output += "Players coming: {yes} \n Players not coming: {no}".format(
                 yes=len(self.reactEmojis["✅"]), no=len(self.reactEmojis["❌"])
-            ),
-            inline=False,
-        )
-        return self.embed
+            )
+        return self.output
 
     def add_data(self, emoji, player: Member):
         try:
@@ -115,7 +84,9 @@ async def runReadyCheck(ctx, client):
         message = await client.wait_for('message', check=lambda m: m.author == ctx.author, timeout=60)
         botMessage.delete()
         author = ctx.author.display_name
+        ctx.send(author)
         gameStr = client.gameIds[message]
+        ctx.send(gameStr)
         client.readyData = ReadyChecker(author, gameStr)
     except asyncio.TimeoutError:
         await ctx.send("```bruh you took too long to type something.```")
