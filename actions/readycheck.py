@@ -13,11 +13,11 @@ class ReadyChecker:
         self.msg_id = data["messageId"]
 
     def createReadyMsg(self):
-        self.output = ["{name} has started a ready check for: {game} | additional notes: ".format(name=self.author, game=self.game)]
-        self.output.append("Players ready: " + formatListString(self.reactEmojis["✅"]))
-        self.output.append("Players ready: " + formatListString(self.reactEmojis["🕐"]))
-        self.output.append("Players ready: " + formatListString(self.reactEmojis["❌"]))
-        self.output.append("Players coming: {yes} \n Players not coming: {no}".format(
+        self.output = ["```prolog\n{name} has started a ready check for: {game} | additional notes: ".format(name=self.author.capitalize(), game=self.game.capitalize())]
+        self.output.append("players ready: {}".format(formatListString(self.reactEmojis["✅"])))
+        self.output.append("players coming next game: {}".format(formatListString(self.reactEmojis["🕐"])))
+        self.output.append("players not coming: {}".format(formatListString(self.reactEmojis["❌"])))
+        self.output.append("total number of players ready: {yes} \ntotal number of players not coming: {no}```".format(
                 yes=len(self.reactEmojis["✅"]), no=len(self.reactEmojis["❌"])
             ))
         
@@ -36,9 +36,9 @@ class ReadyChecker:
             print("error removing data")
 
     def updateMessage(self):
-        self.output[1] = "Players ready: " + formatListString(self.reactEmojis["✅"])
-        self.output[2] = "Players ready: " + formatListString(self.reactEmojis["🕐"])
-        self.output[3] = "Players ready: " + formatListString(self.reactEmojis["❌"])
+        self.output[1] = "players ready: " + formatListString(self.reactEmojis["✅"])
+        self.output[2] = "players coming next game: " + formatListString(self.reactEmojis["🕐"])
+        self.output[3] = "players not coming: " + formatListString(self.reactEmojis["❌"])
         return "\n".join(self.output)
 
     def get_msg_id(self):
@@ -50,10 +50,13 @@ def initReadyData():
 
 def formatListString(list):
     if len(list) == 0:
-        return None
+        return ""
     string_output = ""
     for i in range(len(list)):
-        elem = "{num}. {elem}\n".format(num=i + 1, elem=list[i])
+        if i == (len(list) - 1):  
+            elem = "{num}. {elem}".format(num=i + 1, elem=list[i].capitalize())
+        else:
+            elem = "{num}. {elem}\n".format(num=i + 1, elem=list[i].capitalize())
         string_output += elem
     return string_output
 
@@ -67,17 +70,15 @@ async def runReadyCheck(ctx, author, client):
     try:
         botMessage = await ctx.channel.send("```I am ready. Tag a game and optionally write a note. For example: @Valorant quick we are starting in 2 minutes.```")
         message = await client.wait_for('message', check=lambda m: m.author == author, timeout=60)
-        await ctx.send(message)
         await botMessage.delete()
-        gameStr = client.gameIds[message]
-        await ctx.send(gameStr)
+        gameStr = client.gameIds[message.content]
+        await ctx.send(message.content)
         client.readyData = ReadyChecker(author.display_name, gameStr)
+        client.readyData.reactEmojis['✅'].append(author.display_name)
     except asyncio.TimeoutError:
         await ctx.send("```bruh you took too long to type something.```")
     except IndexError:
         await ctx.send("```that's not a tag...```")
-    except:
-        await ctx.send("Didn't work")
     else:
         readyMessage = await ctx.send(client.readyData.createReadyMsg())
         client.readyData.msg_id = readyMessage.id
@@ -87,7 +88,7 @@ async def runReadyCheck(ctx, author, client):
             await timer.run()
             if timer.seconds_remaining() == 0:
                 await ctx.send(
-                    "```The ready check for {game} has ended```".format(
+                    "```prolog\nThe ready check for {game} has ended```".format(
                         game=client.readyData.game
                     )
                 )

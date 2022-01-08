@@ -34,7 +34,7 @@ class Ogikubot(commands.Bot):
         if reaction.message.id == self.readyData.get_msg_id():
             self.readyData.add_data(reaction.emoji, user)
             newMsg = self.readyData.updateMessage()
-            await reaction.message.edit(newMsg)
+            await reaction.message.edit(content=newMsg)
 
     async def on_reaction_remove(
         self, reaction: discord.Reaction, user: discord.Member
@@ -44,7 +44,7 @@ class Ogikubot(commands.Bot):
         if reaction.message.id == self.readyData.get_msg_id():
             self.readyData.remove_data(reaction.emoji, user)
             newMsg = self.readyData.updateMessage()
-            await reaction.message.edit(newMsg)
+            await reaction.message.edit(content=newMsg)
 
     async def on_raw_reaction_remove(self, payload):
         if payload.user_id != self.user.id:
