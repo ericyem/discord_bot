@@ -14,6 +14,11 @@ class ReadyChecker:
 
     def createReadyMsg(self):
         
+        self.output = "{name} has started a ready check for: {game} | additional notes: ".format(name=self.author, game=self.game)
+        self.output += "Players ready: " + formatListString(self.reactEmojis["✅"])
+        
+        
+        
         self.embed = Embed()
         self.embed.add_field(
             name=(self.game + " check"),
@@ -116,6 +121,8 @@ async def runReadyCheck(ctx, client):
         await ctx.send("```bruh you took too long to type something.```")
     except IndexError:
         await ctx.send("```that's not a tag...```")
+    except:
+        await ctx.send("Didn't work")
     else:
         readyMessage = await ctx.send(embed=client.readyData.createReadyMsg())
         client.readyData.msg_id = readyMessage.id

@@ -74,12 +74,10 @@ class Ogikubot(commands.Bot):
             pass_context=True,
             help="Type $ready, then enter @<game> with an optional note",
         )
-        async def ready(ctx, game):
-            
+        async def ready(ctx):
             self.readyData = initReadyData()
             await ctx.message.delete()
-            await ctx.send(game)
-            await runReadyCheck(ctx, game, self)
+            await runReadyCheck(ctx, self)
 
         @self.command(pass_context=True)
         async def roll(ctx):
