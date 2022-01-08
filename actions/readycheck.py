@@ -67,10 +67,8 @@ async def runReadyCheck(ctx, author, client):
     try:
         botMessage = await ctx.channel.send("```I am ready. Tag a game and optionally write a note. For example: @Valorant quick we are starting in 2 minutes.```")
         message = await client.wait_for('message', check=lambda m: m.author == author, timeout=60)
-        botMessage.delete()
-        ctx.send(author.display_name)
+        await botMessage.delete()
         gameStr = client.gameIds[message]
-        ctx.send(gameStr)
         client.readyData = ReadyChecker(author, gameStr)
     except asyncio.TimeoutError:
         await ctx.send("```bruh you took too long to type something.```")
