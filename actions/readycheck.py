@@ -67,6 +67,7 @@ async def runReadyCheck(ctx, author, client):
     try:
         botMessage = await ctx.channel.send("```I am ready. Tag a game and optionally write a note. For example: @Valorant quick we are starting in 2 minutes.```")
         message = await client.wait_for('message', check=lambda m: m.author == author, timeout=60)
+        await ctx.send(message)
         await botMessage.delete()
         gameStr = client.gameIds[message]
         await ctx.send(gameStr)
