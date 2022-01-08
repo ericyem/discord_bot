@@ -69,7 +69,8 @@ async def runReadyCheck(ctx, author, client):
         message = await client.wait_for('message', check=lambda m: m.author == author, timeout=60)
         await botMessage.delete()
         gameStr = client.gameIds[message]
-        client.readyData = ReadyChecker(author, gameStr)
+        await ctx.send(gameStr)
+        client.readyData = ReadyChecker(author.display_name, gameStr)
     except asyncio.TimeoutError:
         await ctx.send("```bruh you took too long to type something.```")
     except IndexError:
